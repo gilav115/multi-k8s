@@ -1,0 +1,24 @@
+language: generic
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t gilsway/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true gilsway/react-test npm test
+
+after_success:
+  - docker build -t gilsway/multi-client ./client
+  - docker build -t gilsway/multi-nginx ./nginx
+  - docker build -t gilsway/multi-server ./server
+  - docker build -t gilsway/multi-worker ./worker
+  # log in to docker cli (DOCKER_PASSWORD & DOCKER_ID as configured in github)
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push images to docker hub
+  - docker push gilsway/multi-client
+  - docker push gilsway/multi-nginx
+  - docker push gilsway/multi-server
+  - docker push gilsway/multi-worker
