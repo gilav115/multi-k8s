@@ -74,5 +74,4 @@ class Fib extends Component {
   }
 }
 
-// react listens on default port 3000
 export default Fib;
