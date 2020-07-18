@@ -20,7 +20,7 @@ before_install:
   - docker build -t gilsway/react-tests -f ./client/Dockerfile.dev ./client
 
 script:
-   - docker run -e CI=true gilsway/docker-react npm run test 
+   - docker run -e CI=true gilsway/react-tests npm run test 
 
 deploy:
   provider: script
